@@ -1,13 +1,13 @@
+require('dotenv').config();
 const express = require('express');
+const bodyParser = require('body-parser');
 const productsRoute = require('./routes/productsRoute');
 const salesRoute = require('./routes/salesRoute');
 const error = require('./middlewares/error');
 
 const app = express();
 
-app.use(express.json());
-
-require('dotenv').config();
+app.use(bodyParser.json());
 
 app.use('/products', productsRoute);
 app.use('/sales', salesRoute);

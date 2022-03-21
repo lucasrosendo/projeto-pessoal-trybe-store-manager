@@ -1,9 +1,14 @@
 const express = require('express');
 
+const {
+  getAll,
+  getById,
+} = require('../controllers/salesController');
+
 const router = express.Router();
 
-router.get('/');
-router.get('/:id');
+router.get('/', getAll);
+router.get('/:id', getById);
 router.post('/');
 router.put('/:id');
 router.delete('/:id');
