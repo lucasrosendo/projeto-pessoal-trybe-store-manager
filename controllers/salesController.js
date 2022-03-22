@@ -34,8 +34,21 @@ const addSales = async (req, res, next) => {
   }
 };
 
+const update = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const [{ productId, quantity }] = req.body;
+    const result = await service.update(id, productId, quantity);
+
+    return res.status(200).json(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   getAll,
   getById,
   addSales,
+  update,
 };

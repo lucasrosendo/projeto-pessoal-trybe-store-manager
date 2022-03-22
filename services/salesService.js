@@ -14,8 +14,14 @@ const addSales = async (sales) => {
   return ({ id: newSaleId.insertId, itemsSold: sales });
 };
 
+const update = async (saleId, productId, quantity) => {
+  const sale = await model.update(saleId, productId, quantity);
+  return ({ saleId, itemUpdated: [sale] });
+};
+
 module.exports = {
   getAll,
   getById,
   addSales,
+  update,
 };
