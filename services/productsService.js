@@ -13,8 +13,14 @@ const create = async ({ name, quantity }) => {
   };
 };
 
+const update = async (id, name, quantity) => model.update(id, name, quantity);
+
+const deleteProduct = async (id) => model.deleteProduct(id);
+
 module.exports = {
   getAll,
   getById,
   create,
+  update,
+  deleteProduct,
 };
