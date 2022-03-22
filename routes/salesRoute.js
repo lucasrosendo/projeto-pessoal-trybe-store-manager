@@ -13,12 +13,14 @@ const {
   quantityValidation,
  } = require('../middlewares/validationSales');
 
+ const { deletedSale, createdSale } = require('../middlewares/updateQuantity');
+
 const router = express.Router();
 
 router.get('/', getAll);
 router.get('/:id', getById);
-router.post('/', idValidation, quantityValidation, addSales);
+router.post('/', idValidation, quantityValidation, createdSale, addSales);
 router.put('/:id', idValidation, quantityValidation, update);
-router.delete('/:id', deleteSale);
+router.delete('/:id', deletedSale, deleteSale);
 
 module.exports = router;
