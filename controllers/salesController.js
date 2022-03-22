@@ -23,12 +23,12 @@ const getById = async (req, res, next) => {
   }
 };
 
-const addSales = async (req, res, next) => {
+const create = async (req, res, next) => {
   try {
-    const [...sales] = req.body;
-    const createdSales = await service.addSales(sales);
+    const [...products] = req.body;
+    const product = await service.create(products);
 
-    return res.status(201).json(createdSales);
+    return res.status(201).json(product);
   } catch (err) {
     next(err);
   }
@@ -67,7 +67,7 @@ const deleteSale = async (req, res, next) => {
 module.exports = {
   getAll,
   getById,
-  addSales,
+  create,
   update,
   deleteSale,
 };

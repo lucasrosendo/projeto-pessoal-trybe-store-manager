@@ -1,58 +1,57 @@
 const connection = require('./connection');
 
 const getAll = async () => {
-  const [sales] = await connection.execute(`
-    SELECT
-      sales.id AS saleId,
-      sales.date,
-      product.product_id AS productId,
-      product.quantity
-    FROM
-      StoreManager.sales
-    INNER JOIN
-      StoreManager.sales_products AS product
-        ON sales.id = product.sale_id;
-  `);
-
-  return sales;
+  const [result] = await connection.execute(
+    `
+      SELECT
+        sp.sale_id AS saleId,
+        s.date,
+        sp.product_id AS productId,
+        sp.quantity
+      FROM StoreManager.sales_products AS sp
+      JOIN StoreManager.sales AS s
+      ON sp.sale_id = s.id
+      ORDER BY saleId ASC, productId ASC
+    `,
+  );
+  return result;
 };
 
 const getById = async (id) => {
-  const [sales] = await connection.execute(`
+  const [result] = await connection.execute(
+    `
     SELECT
-      sales.date,
-      product.product_id AS productId,
-      product.quantity
-    FROM
-      StoreManager.sales
-    INNER JOIN
-      StoreManager.sales_products AS product
-        ON sales.id = product.sale_id
-    WHERE sales.id = ?;
-  `, [id]);
-
-  if (!id || !sales.length) return { code: 404 };
-  return sales;
-};
-
-const newSales = async () => {
-  const [sales] = await connection.execute(
-    `INSERT INTO
-      StoreManager.sales ()
-    VALUES ();`,
+      s.date,
+      sp.product_id AS productId,
+      sp.quantity
+    FROM StoreManager.sales_products AS sp
+    JOIN StoreManager.sales AS s
+    ON sp.sale_id = s.id
+    WHERE sale_id = ?
+    `,
+    [id],
   );
-  return sales;
+  return result;
 };
 
-const createSalesProducts = async (id, productId, quantity) => {
-  const [sales] = await connection.execute(
+const newSaleId = async () => {
+  const [result] = await connection.execute(
+    `
+    INSERT INTO StoreManager.sales ()
+    VALUES ()
+    `,
+  );
+  return result;
+};
+
+const create = async (saleId, productId, quantity) => {
+  await connection.execute(
     `
     INSERT INTO StoreManager.sales_products (sale_id, product_id, quantity)
     VALUES (?, ?, ?)
     `,
-    [id, productId, quantity],
+    [saleId, productId, quantity],
   );
-  return sales;
 };
 
 const update = async (saleId, productId, quantity) => {
@@ -81,35 +80,11 @@ const deleteSale = async (id) => {
   );
 };
 
-const subtractProduct = async (id, quantity) => {
-  await connection.execute(
-    `
-      UPDATE StoreManager.products
-      SET quantity = quantity - ?
-      WHERE id = ?;    
-    `,
-    [quantity, id],
-  );
-};
-
-const addProduct = async (id, quantity) => {
-  await connection.execute(
-    `
-      UPDATE StoreManager.products
-      SET quantity = quantity + ?
-      WHERE id = ?
-    `,
-    [quantity, id],
-  );
-};
-
 module.exports = {
   getAll,
   getById,
-  newSales,
-  createSalesProducts,
+  newSaleId,
+  create,
   update,
   deleteSale,
-  subtractProduct,
-  addProduct,
 };

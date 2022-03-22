@@ -55,10 +55,34 @@ const deleteProduct = async (id) => {
   );
 };
 
+const subtract = async (id, quantity) => {
+  await connection.execute(
+    `
+      UPDATE StoreManager.products
+      SET quantity = quantity - ?
+      WHERE id = ?;    
+    `,
+    [quantity, id],
+  );
+};
+
+const add = async (id, quantity) => {
+  await connection.execute(
+    `
+      UPDATE StoreManager.products
+      SET quantity = quantity + ?
+      WHERE id = ?
+    `,
+    [quantity, id],
+  );
+};
+
 module.exports = {
   getAll,
   getById,
   create,
   update,
   deleteProduct,
+  subtract,
+  add,
 };

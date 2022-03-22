@@ -4,14 +4,12 @@ const getAll = async () => model.getAll();
 
 const getById = async (id) => model.getById(id);
 
-const addSales = async (sales) => {
-  const newSaleId = await model.newSales();
-
+const create = async (sales) => {
+  const saleId = await model.newSaleId();
   sales.forEach(async (sale) => {
-    await model.createSalesProducts(newSaleId.insertId, sale.productId, sale.quantity);
+    await model.create(saleId.insertId, sale.productId, sale.quantity);
   });
-
-  return ({ id: newSaleId.insertId, itemsSold: sales });
+  return ({ id: saleId.insertId, itemsSold: sales });
 };
 
 const update = async (saleId, productId, quantity) => {
@@ -24,7 +22,7 @@ const deleteSale = async (id) => model.deleteSale(id);
 module.exports = {
   getAll,
   getById,
-  addSales,
+  create,
   update,
   deleteSale,
 };
