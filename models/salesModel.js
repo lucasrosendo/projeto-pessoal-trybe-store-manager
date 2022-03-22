@@ -81,6 +81,28 @@ const deleteSale = async (id) => {
   );
 };
 
+const subtractProduct = async (id, quantity) => {
+  await connection.execute(
+    `
+      UPDATE StoreManager.products
+      SET quantity = quantity - ?
+      WHERE id = ?;    
+    `,
+    [quantity, id],
+  );
+};
+
+const addProduct = async (id, quantity) => {
+  await connection.execute(
+    `
+      UPDATE StoreManager.products
+      SET quantity = quantity + ?
+      WHERE id = ?
+    `,
+    [quantity, id],
+  );
+};
+
 module.exports = {
   getAll,
   getById,
@@ -88,4 +110,6 @@ module.exports = {
   createSalesProducts,
   update,
   deleteSale,
+  subtractProduct,
+  addProduct,
 };

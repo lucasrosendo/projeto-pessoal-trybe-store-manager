@@ -17,10 +17,20 @@ const update = async (id, name, quantity) => model.update(id, name, quantity);
 
 const deleteProduct = async (id) => model.deleteProduct(id);
 
+const subtractProduct = async (id, quantity) => {
+  await model.subtract(id, quantity);
+};
+
+const addProduct = async (id, quantity) => {
+  await model.add(id, quantity);
+};
+
 module.exports = {
   getAll,
   getById,
   create,
   update,
   deleteProduct,
+  subtractProduct,
+  addProduct,
 };
