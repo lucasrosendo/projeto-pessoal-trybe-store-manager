@@ -23,7 +23,19 @@ const getById = async (req, res, next) => {
   }
 };
 
+const addSales = async (req, res, next) => {
+  try {
+    const [...sales] = req.body;
+    const createdSales = await service.addSales(sales);
+
+    return res.status(201).json(createdSales);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   getAll,
   getById,
+  addSales,
 };
