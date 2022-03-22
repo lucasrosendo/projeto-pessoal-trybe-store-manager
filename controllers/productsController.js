@@ -23,7 +23,26 @@ const getById = async (req, res, next) => {
   }
 };
 
+const create = async (req, res, next) => {
+  try {
+    const { name, quantity } = req.body;
+
+    const verifyName = await service.getAll();
+
+    if (verifyName.find((p) => p.name === name)) {
+      return res.status(409).json({ message: 'Product already exists' });
+    }
+
+    const newProduct = await service.create({ name, quantity });
+
+    return res.status(201).json(newProduct);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   getAll,
   getById,
+  create,
 };
